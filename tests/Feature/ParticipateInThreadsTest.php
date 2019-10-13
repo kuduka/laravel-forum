@@ -15,13 +15,13 @@ class ParticipateInThreadsTest extends TestCase
         $this->expectException('Illuminate\Auth\AuthenticationException');
         $this->post('/threads/1/replies', []);
     }
-    
+
     /** @test */
     function an_authenticated_user_may_participate_in_forum_threads()
     {
         $this->be($user = factory('App\User')->create());
         $thread = factory('App\Thread')->create();
-        $reply = factory('App\Reply')->make();
+        $reply = factory('App\Reply')->make(['user_id' => $user->id]);
         $this->post($thread->path() . '/replies', $reply->toArray());
         $this->get($thread->path())->assertSee($reply->body);
     }
