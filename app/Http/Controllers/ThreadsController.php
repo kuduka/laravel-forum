@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Filters\ThreadFilters;
 use App\Thread;
 use App\Channel;
 use Illuminate\Http\Request;
@@ -18,23 +20,24 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        if($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();  
-        }
+        $threads = $this->getThreads($channel, $filters);
 
-        if($username = request('by')){
-            $user = \App\User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
-
-        $threads = $threads->get();
-        
         return view('threads.index', compact('threads'));
     }
+
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->get();
+    }
+
 
     /**
      * Show the form for creating a new resource.
