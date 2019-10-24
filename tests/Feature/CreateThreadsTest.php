@@ -37,7 +37,7 @@ class CreateThreadsTest extends TestCase
             ->assertSee($thread->body);
     }
 
-   /** @test */
+    /** @test */
     public function a_thread_requires_a_title()
     {
 
@@ -46,7 +46,7 @@ class CreateThreadsTest extends TestCase
 
     }
 
-   /** @test */
+    /** @test */
     public function a_thread_requires_a_body()
     {
 
@@ -55,7 +55,7 @@ class CreateThreadsTest extends TestCase
 
     }
 
-   /** @test */
+    /** @test */
     public function a_thread_requires_a_valid_channel()
     {
 
@@ -64,6 +64,36 @@ class CreateThreadsTest extends TestCase
         $this->publishThread(['channel_id' => 999])
             ->assertSessionHasErrors('channel_id');
 
+    }
+
+    /** @test */
+    public function guests_cannot_delete_threads()
+    {
+        $thread = create('App\Thread');
+
+        $response = $this->delete($thread->path());
+
+        $response->assertRedirect('/threads');
+    }
+
+    /** @test */
+    public function a_thread_can_be_deleted()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread');
+
+        $response = $this->json('DELETE', $thread->path());
+
+        $response->assertStatus(204);
+        
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+    }
+
+    /** @test */
+    public function threads_may_only_be_deleted_by_those_who_have_permission()
+    {
+        
     }
 
     public function publishThread($overrides = [])
@@ -75,4 +105,5 @@ class CreateThreadsTest extends TestCase
         return $this->post('/threads', $thread->toArray());
       
     }
+
 }
