@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Activity;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -79,17 +80,26 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function authorized_users_can_be_delete_a_thread()
+    public function authorized_users_can_delete_threads()
     {
+
+        $this->withoutExceptionHandling();
+
         $this->signIn();
 
         $thread = create('App\Thread', ['user_id' => auth()->id()]);
+        $reply = create('App\Reply', ['thread_id' => $thread->id]);
 
         $response = $this->json('DELETE', $thread->path());
 
         $response->assertStatus(204);
         
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+
+        $this->assertEquals(0, Activity::count());
+
     }
 
 
