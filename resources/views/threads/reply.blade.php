@@ -31,11 +31,7 @@
 	        @can ('update', $reply)
 		        <div class="card-footer level">
 		       		<button class="btn btn-primary btn-sm mr-1" @click="editing = true">Edit</button>
-		            <form method="POST" action="/replies/{{ $reply->id }} ">
-		             	@csrf
-		             	{{ method_field('DELETE') }}
-		            	<button type="submit" class="btn btn-sm btn-danger">Delete</button>
-		        	</form>
+		    		<button class="btn btn-danger btn-sm mr-1" @click="destroy">Delete</button>
 		        </div>
 	        @endcan
 	    </div>

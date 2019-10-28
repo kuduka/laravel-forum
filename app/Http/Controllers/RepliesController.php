@@ -36,6 +36,10 @@ class RepliesController extends Controller
 
         $reply->delete();
 
+        if(request()->exceptJson()){
+            return response(['status' => 'Reply deleted']);
+        }
+
         return back();
     }
 
