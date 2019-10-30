@@ -62,12 +62,13 @@ class ParticipateInThreadsTest extends TestCase
     function authorized_users_can_delete_replies()
     {
 
+        $this->withoutExceptionHandling();
+        
         $this->signIn();
 
         $reply = create('App\Reply', ['user_id' => auth()->id()]);
 
-        $this->delete("/replies/{$reply->id}")
-            ->assertStatus(302);
+        $this->delete("/replies/{$reply->id}")->assertStatus(302);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
