@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
-
-	public function __construct()
-	{
-		$this->middleware('auth', ['except' => 'index']);
-	}
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'index']);
+    }
 
     public function index($channelId, Thread $thread)
     {
@@ -21,7 +20,6 @@ class RepliesController extends Controller
 
     public function store($channelId, Thread $thread, Request $request)
     {
-
         $this->validate($request, [
             'body' => 'required',
         ]);
@@ -41,12 +39,11 @@ class RepliesController extends Controller
 
     public function destroy(Reply $reply)
     {
-
         $this->authorize('update', $reply);
 
         $reply->delete();
 
-        if(request()->expectsJson()){
+        if (request()->expectsJson()) {
             return response(['status' => 'Reply deleted']);
         }
 
@@ -55,7 +52,6 @@ class RepliesController extends Controller
 
     public function update(Reply $reply)
     {
-
         $this->authorize('update', $reply);
 
         $reply->update(request(['body']));

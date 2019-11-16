@@ -7,7 +7,6 @@ use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
 {
-
     use RefreshDatabase;
 
     protected $thread;
@@ -36,7 +35,6 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_according_to_a_channel()
     {
-
         $channel = create('App\Channel');
         $threadInChannel = create('App\Thread', ['channel_id' => $channel->id]);
         $threadNotInChannel = create('App\Thread');
@@ -44,7 +42,6 @@ class ReadThreadsTest extends TestCase
         $this->get('/threads/' . $channel->slug)
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
-
     }
 
     /** @test */
@@ -52,7 +49,7 @@ class ReadThreadsTest extends TestCase
     {
         $this->signIn(create('App\User', ['name' => 'JohnDoe']));
 
-        $threadyByJohn = create('App\Thread',  ['user_id' => auth()->id()]);
+        $threadyByJohn = create('App\Thread', ['user_id' => auth()->id()]);
         $threadyNotByJohn = create('App\Thread');
 
         $this->get('/threads?by=JohnDoe')
@@ -88,7 +85,7 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    function a_user_can_filter_threads_by_those_that_are_unanswered()
+    public function a_user_can_filter_threads_by_those_that_are_unanswered()
     {
         $thread = create('App\Thread');
         create('App\Reply', ['thread_id' => $thread->id]);

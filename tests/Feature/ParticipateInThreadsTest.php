@@ -10,8 +10,8 @@ class ParticipateInThreadsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function unauthenticated_users_may_not_add_replies()
-    {        
+    public function unauthenticated_users_may_not_add_replies()
+    {
         //$this->WithoutExceptionHandling();
 
         $this->post('/threads/some-channel/1/replies', [])
@@ -19,7 +19,7 @@ class ParticipateInThreadsTest extends TestCase
     }
 
     /** @test */
-    function an_authenticated_user_may_participate_in_forum_threads()
+    public function an_authenticated_user_may_participate_in_forum_threads()
     {
         $this->signIn();
 
@@ -29,11 +29,10 @@ class ParticipateInThreadsTest extends TestCase
         $this->post($thread->path() . '/replies', $reply->toArray());
         
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
-
     }
 
     /** @test */
-    function a_reply_requires_a_body()
+    public function a_reply_requires_a_body()
     {
         $this->signIn();
 
@@ -45,7 +44,7 @@ class ParticipateInThreadsTest extends TestCase
     }
 
     /** @test */
-    function unathorized_users_cannot_delete_replies()
+    public function unathorized_users_cannot_delete_replies()
     {
         $reply = create('App\Reply');
 
@@ -59,9 +58,8 @@ class ParticipateInThreadsTest extends TestCase
     }
 
     /** @test */
-    function authorized_users_can_delete_replies()
+    public function authorized_users_can_delete_replies()
     {
-
         $this->withoutExceptionHandling();
         
         $this->signIn();
@@ -76,9 +74,8 @@ class ParticipateInThreadsTest extends TestCase
     }
 
     /** @test */
-    function unathorized_users_cannot_update_replies()
+    public function unathorized_users_cannot_update_replies()
     {
-
         $reply = create('App\Reply');
 
         $this->patch("/replies/{$reply->id}")
@@ -91,9 +88,8 @@ class ParticipateInThreadsTest extends TestCase
     }
 
     /** @test */
-    function authorized_users_can_update_replies()
+    public function authorized_users_can_update_replies()
     {
-
         $this->signIn();
 
         $reply = create('App\Reply', ['user_id' => auth()->id()]);

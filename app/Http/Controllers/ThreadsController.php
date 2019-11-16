@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Filters\ThreadFilters;
 use App\Thread;
 use App\Channel;
@@ -10,7 +9,6 @@ use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show', 'destroy']);
@@ -55,7 +53,7 @@ class ThreadsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */ 
+     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -117,7 +115,6 @@ class ThreadsController extends Controller
      */
     public function destroy($channel, Thread $thread)
     {
-
         $this->authorize('update', $thread);
         
         $thread->delete();
