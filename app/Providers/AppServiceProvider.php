@@ -36,5 +36,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(TelescopeServiceProvider::class);
     	}
+
+        \Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
 }
