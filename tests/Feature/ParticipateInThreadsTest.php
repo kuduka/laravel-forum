@@ -40,7 +40,7 @@ class ParticipateInThreadsTest extends TestCase
         $reply = make('App\Reply', ['body' => null]);
         
         $this->post($thread->path() . '/replies', $reply->toArray())
-             ->assertSessionHasErrors('body');
+            ->assertStatus(422);
     }
 
     /** @test */
@@ -114,10 +114,23 @@ class ParticipateInThreadsTest extends TestCase
             'body' => 'yahoo customer support'
         ]);
 
-        $this->WithoutExceptionHandling();
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
 
-        $this->expectException(\Exception::class);
+    /** @test */
+    public function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $thread = create('App\Thread');
+
+        $reply = make('App\Reply');
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(201);
+               
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }

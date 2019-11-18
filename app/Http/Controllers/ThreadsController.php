@@ -14,7 +14,6 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show', 'destroy']);
     }
 
-
     public function index(Channel $channel, ThreadFilters $filters)
     {
         $threads = $this->getThreads($channel, $filters);
