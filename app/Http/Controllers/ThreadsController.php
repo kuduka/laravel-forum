@@ -59,6 +59,7 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'title' => 'required|spamfree',
             'body' => 'required|spamfree',
