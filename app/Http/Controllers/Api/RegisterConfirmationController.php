@@ -19,7 +19,7 @@ class RegisterConfirmationController extends Controller
         		->with('flash', 'Unknown token.');
         }
 
-       	return redirect('/threads')
+       	return redirect(route('threads'))
        		->with('flash', 'Your account is now confirmed! You may post to the form.');
     }
 }
