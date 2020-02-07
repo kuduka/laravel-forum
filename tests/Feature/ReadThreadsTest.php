@@ -92,4 +92,17 @@ class ReadThreadsTest extends TestCase
         $response = $this->getJson('threads?unanswered=1')->json();
         $this->assertCount(1, $response['data']);
     }
+
+    /** @test */
+    public function we_record_a_new_visit_each_time_the_thread_is_read()
+    {
+        $thread = create('App\Thread');
+           
+        $this->assertEquals(0, $thread->visits);
+
+        $this->call('GET', $thread->path());
+
+        $this->assertEquals(1, $thread->fresh()->visits);
+     
+    }
 }
