@@ -25,6 +25,7 @@ Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsC
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
+Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
 
 Route::get('/register/confirm', 'Api\RegisterConfirmationController@index')->name('register.confirm');
 Route::get('api/users', 'Api\UsersController@index');
