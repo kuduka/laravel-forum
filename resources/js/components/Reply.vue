@@ -1,6 +1,6 @@
 <template>
     <div :id="'reply'+id">
-        <div class="card-header mt-4">
+        <div class="card-header mt-4" :class="isBest ? 'bg-success': ''">
             <div class="level">
                 <h5 class="flex">
                     <a :href="'/profiles/'+data.owner.name" class="flex"
@@ -12,7 +12,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="card">
             <div class="card-body">
                 <div v-if="editing">
@@ -20,16 +19,18 @@
                         <div class="form-group">
                             <textarea class="form-control" v-model="body" required></textarea>
                         </div>
-
                         <button class="btn btn-xs btn-primary">Update</button>
                         <button class="btn btn-xs btn-link" @click="editing = false" type="button">Cancel</button>
                     </form>
                 </div>
                 <div v-else v-html="body"> </div>
             </div>
-            <div class="card-footer level" v-if="canUpdate">
-                <button class="btn btn-primary btn-sm mr-1" @click="editing = true">Edit</button>
-                <button class="btn btn-danger btn-sm mr-1" @click="destroy">Delete</button>
+            <div class="card-footer level">
+                <div  v-if="canUpdate">
+                    <button class="btn btn-primary btn-sm mr-1" @click="editing = true">Edit</button>
+                    <button class="btn btn-danger btn-sm mr-1" @click="destroy">Delete</button>
+                </div>
+                <button class="btn btn-primary btn-sm ml-a" @click="markBestReply" v-show="! isBest">Best Reply?</button>
             </div>
         </div>
     </div>
@@ -48,6 +49,7 @@
     			editing: false,
                 id: this.data.id,
     			body: this.data.body,
+                isBest: false,
     		};
     	},
         computed: {
@@ -77,6 +79,9 @@
                 axios.delete('/replies/' + this.data.id);
 
                 this.$emit('deleted', this.data.id);
+            },
+            markBestReply() {
+                this.isBest = true;
             }
     	},
     };
