@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,8 +30,14 @@ class CreateThreadsTable extends Migration
                 ->unsigned();
             $table->string('title');
             $table->text('body');
-            $table->unsignedInteger('best_reply_id')->nullable();
+            $table->bigInteger('best_reply_id')
+                ->unsigned()
+                ->nullable();
             $table->timestamps();
+            $table->foreign('best_reply_id')
+                ->references('id')
+                ->on('replies')
+                ->onDelete('set null');
         });
     }
 
