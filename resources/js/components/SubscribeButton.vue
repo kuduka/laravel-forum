@@ -5,17 +5,22 @@
 <script>
     export default {
         props: ['active'],
+        data() {
+            return {
+                activelocal: this.active,
+            }
+        },
         computed: {
             classes() {
-                return ['btn', this.active ? 'btn-danger' : 'btn-primary'];
+                return ['btn', this.activelocal ? 'btn-danger' : 'btn-primary'];
             }
         },
         methods: {
             subscribe() {
                 axios[
-                    (this.active ? 'delete' : 'post')
+                    (this.activelocal ? 'delete' : 'post')
                 ](location.pathname + '/subscriptions');
-                this.active = ! this.active;
+                this.activelocal = ! this.activelocal;
             }
         }
     }

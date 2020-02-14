@@ -3,12 +3,12 @@
         <div class="card-header mt-4" :class="isBest ? 'bg-success': ''">
             <div class="level">
                 <h5 class="flex">
-                    <a :href="'/profiles/'+data.owner.name" class="flex"
-                        v-text="data.owner.name"> 
+                    <a :href="'/profiles/' + reply.owner.name"
+                        v-text="reply.owner.name">
                     </a> said <span v-text="ago"></span>
                 </h5>
                 <div v-if="signedIn">
-                    <favorite :reply="data"></favorite>
+                    <favorite :reply="reply"></favorite>
                 </div>
             </div>
         </div>
@@ -25,68 +25,59 @@
                 </div>
                 <div v-else v-html="body"> </div>
             </div>
-            <div class="card-footer level">
-                <div  v-if="authorize('updateReply', reply)">
+            <div class="card-footer level" v-if="authorize('owns', reply) || authorize('owns', reply.thread)">
                     <button class="btn btn-primary btn-sm mr-1" @click="editing = true">Edit</button>
                     <button class="btn btn-danger btn-sm mr-1" @click="destroy">Delete</button>
-                </div>
-                <button class="btn btn-primary btn-sm ml-a" @click="markBestReply" v-show="! isBest">Best Reply?</button>
+                    <button class="btn btn-primary btn-sm ml-a" @click="markBestReply" v-if="authorize('owns', reply.thread)">Best Reply?</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-
-    import Favorite from './Favorite';
+    import Favorite from './Favorite.vue';
     import moment from 'moment';
-
     export default {
-    	props: ['data'],
+        props: ['reply'],
         components: { Favorite },
-    	data() {
-    		return {
-    			editing: false,
-                id: this.data.id,
-    			body: this.data.body,
-                isBest: this.data.isBest,
-                reply: this.data,
-    		};
-    	},
+        data() {
+            return {
+                editing: false,
+                id: this.reply.id,
+                body: this.reply.body,
+                isBest: this.reply.isBest,
+            };
+        },
         computed: {
             ago() {
-                return moment(this.data.created_at).fromNow() + '...';
-            },
+                return moment(this.reply.created_at).fromNow() + '...';
+            }
         },
         created () {
             window.events.$on('best-reply-selected', id => {
                 this.isBest = (id === this.id);
             });
         },
-    	methods: {
-    		update() {
+        methods: {
+            update() {
                 axios.patch(
-                    '/replies/' + this.data.id, {
+                    '/replies/' + this.id, {
                         body: this.body
                     })
                     .catch(error => {
                         flash(error.response.data, 'danger');
                     });
-    			this.editing = false;
-    			flash('Updated Reply!')
-    		},
+                this.editing = false;
+                flash('Updated!');
+            },
             destroy() {
-                axios.delete('/replies/' + this.data.id);
-
-                this.$emit('deleted', this.data.id);
+                axios.delete('/replies/' + this.id);
+                this.$emit('deleted', this.id);
             },
             markBestReply() {
-                this.isBest = true;
-
-                axios.post('/replies/' + this.data.id + '/best');
-
-                window.events.$emit('best-reply-selected', this.data.id);
+                axios.post('/replies/' + this.id + '/best');
+                window.events.$emit('best-reply-selected', this.id);
             }
-    	},
-    };
+        }
+    }
 </script>

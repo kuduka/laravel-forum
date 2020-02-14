@@ -3538,7 +3538,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Favorite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Favorite */ "./resources/js/components/Favorite.vue");
+/* harmony import */ var _Favorite_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Favorite.vue */ "./resources/js/components/Favorite.vue");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 //
@@ -3577,27 +3577,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data'],
+  props: ['reply'],
   components: {
-    Favorite: _Favorite__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Favorite: _Favorite_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
       editing: false,
-      id: this.data.id,
-      body: this.data.body,
-      isBest: this.data.isBest,
-      reply: this.data
+      id: this.reply.id,
+      body: this.reply.body,
+      isBest: this.reply.isBest
     };
   },
   computed: {
     ago: function ago() {
-      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow() + '...';
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.reply.created_at).fromNow() + '...';
     }
   },
   created: function created() {
@@ -3609,22 +3606,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     update: function update() {
-      axios.patch('/replies/' + this.data.id, {
+      axios.patch('/replies/' + this.id, {
         body: this.body
       })["catch"](function (error) {
         flash(error.response.data, 'danger');
       });
       this.editing = false;
-      flash('Updated Reply!');
+      flash('Updated!');
     },
     destroy: function destroy() {
-      axios["delete"]('/replies/' + this.data.id);
-      this.$emit('deleted', this.data.id);
+      axios["delete"]('/replies/' + this.id);
+      this.$emit('deleted', this.id);
     },
     markBestReply: function markBestReply() {
-      this.isBest = true;
-      axios.post('/replies/' + this.data.id + '/best');
-      window.events.$emit('best-reply-selected', this.data.id);
+      axios.post('/replies/' + this.id + '/best');
+      window.events.$emit('best-reply-selected', this.id);
     }
   }
 });
@@ -3646,15 +3642,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['active'],
+  data: function data() {
+    return {
+      activelocal: this.active
+    };
+  },
   computed: {
     classes: function classes() {
-      return ['btn', this.active ? 'btn-danger' : 'btn-primary'];
+      return ['btn', this.activelocal ? 'btn-danger' : 'btn-primary'];
     }
   },
   methods: {
     subscribe: function subscribe() {
-      axios[this.active ? 'delete' : 'post'](location.pathname + '/subscriptions');
-      this.active = !this.active;
+      axios[this.activelocal ? 'delete' : 'post'](location.pathname + '/subscriptions');
+      this.activelocal = !this.activelocal;
     }
   }
 });
@@ -58117,7 +58118,7 @@ var render = function() {
           { key: reply.id },
           [
             _c("reply", {
-              attrs: { data: reply },
+              attrs: { reply: reply },
               on: {
                 deleted: function($event) {
                   return _vm.remove(index)
@@ -58172,16 +58173,15 @@ var render = function() {
         _c("div", { staticClass: "level" }, [
           _c("h5", { staticClass: "flex" }, [
             _c("a", {
-              staticClass: "flex",
-              attrs: { href: "/profiles/" + _vm.data.owner.name },
-              domProps: { textContent: _vm._s(_vm.data.owner.name) }
+              attrs: { href: "/profiles/" + _vm.reply.owner.name },
+              domProps: { textContent: _vm._s(_vm.reply.owner.name) }
             }),
             _vm._v(" said "),
             _c("span", { domProps: { textContent: _vm._s(_vm.ago) } })
           ]),
           _vm._v(" "),
           _vm.signedIn
-            ? _c("div", [_c("favorite", { attrs: { reply: _vm.data } })], 1)
+            ? _c("div", [_c("favorite", { attrs: { reply: _vm.reply } })], 1)
             : _vm._e()
         ])
       ]
@@ -58249,50 +58249,43 @@ var render = function() {
           : _c("div", { domProps: { innerHTML: _vm._s(_vm.body) } })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-footer level" }, [
-        _vm.authorize("updateReply", _vm.reply)
-          ? _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary btn-sm mr-1",
-                  on: {
-                    click: function($event) {
-                      _vm.editing = true
-                    }
-                  }
-                },
-                [_vm._v("Edit")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger btn-sm mr-1",
-                  on: { click: _vm.destroy }
-                },
-                [_vm._v("Delete")]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
+      _vm.authorize("owns", _vm.reply) ||
+      _vm.authorize("owns", _vm.reply.thread)
+        ? _c("div", { staticClass: "card-footer level" }, [
+            _c(
+              "button",
               {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.isBest,
-                expression: "! isBest"
-              }
-            ],
-            staticClass: "btn btn-primary btn-sm ml-a",
-            on: { click: _vm.markBestReply }
-          },
-          [_vm._v("Best Reply?")]
-        )
-      ])
+                staticClass: "btn btn-primary btn-sm mr-1",
+                on: {
+                  click: function($event) {
+                    _vm.editing = true
+                  }
+                }
+              },
+              [_vm._v("Edit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger btn-sm mr-1",
+                on: { click: _vm.destroy }
+              },
+              [_vm._v("Delete")]
+            ),
+            _vm._v(" "),
+            _vm.authorize("owns", _vm.reply.thread)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-sm ml-a",
+                    on: { click: _vm.markBestReply }
+                  },
+                  [_vm._v("Best Reply?")]
+                )
+              : _vm._e()
+          ])
+        : _vm._e()
     ])
   ])
 }
@@ -70615,8 +70608,11 @@ var app = new Vue({
 
 var user = window.App.user;
 module.exports = {
-  updateReply: function updateReply(reply) {
-    return reply.user_id === user.id;
+  owns: function owns(model) {
+    var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user_id';
+    res = model[prop] === user.id;
+    console.log(model[prop], user.id);
+    return res;
   }
 };
 
