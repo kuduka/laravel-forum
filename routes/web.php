@@ -27,6 +27,7 @@ Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotification
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
 Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
+Route::post('locked-threads/{thread}', 'LockedThreadsController@store')->name('locked-threads.store')->middleware('admin');
 
 Route::get('/register/confirm', 'Api\RegisterConfirmationController@index')->name('register.confirm');
 Route::get('api/users', 'Api\UsersController@index');
