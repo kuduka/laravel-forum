@@ -33,6 +33,7 @@ class CreateThreadsTable extends Migration
             $table->bigInteger('best_reply_id')
                 ->unsigned()
                 ->nullable();
+            $table->boolean('locked')->default(false);
             $table->timestamps();
             $table->foreign('best_reply_id')
                 ->references('id')
