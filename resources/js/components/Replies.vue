@@ -9,6 +9,7 @@
 		<p v-if="$parent.locked">
 			This thread has been locked. No more replies are allowed.
 		</p>
+		
 		<new-reply @created="add" v-else></new-reply>
 	</div>
 </template>
