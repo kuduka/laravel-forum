@@ -5,5 +5,9 @@ module.exports = {
     	res = model[prop] === user.id;
     	console.log(model[prop], user.id)
         return res;
-    }
+    },
+
+    isAdmin () {
+        return ['kuduka', ].includes(user.name);
+    },
 };
