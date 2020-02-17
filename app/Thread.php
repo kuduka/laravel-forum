@@ -103,6 +103,11 @@ class Thread extends Model
         return $this->updated_at > cache($key);
     }
 
+    public function getBodyAttribute($body)
+    {
+        return \Purify::clean($body);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

@@ -15,7 +15,8 @@
         "laravel/framework": "^6.2",
         "laravel/scout": "^7.2",
         "laravel/telescope": "^2.1",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "stevebauman/purify": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
