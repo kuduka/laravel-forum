@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="g-recaptcha" data-sitekey="6LcTO9kUAAAAADquRxZdvL38sLEHonV8iVVbKZEL"></div>
+                                <div class="g-recaptcha" data-sitekey="{{ config('council.recaptcha.key') }}"></div>
                             </div>
 
                             <div class="form-group">
