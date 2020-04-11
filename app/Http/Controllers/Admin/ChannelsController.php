@@ -26,7 +26,7 @@ class ChannelsController extends Controller
             'description' => 'required',
         ]);
 
-        $channel = Channel::create($data + [ 'slug' => Str::slug($data['name'])]);
+        $channel = Channel::create($data + ['slug' => Str::slug($data['name'])]);
 
         Cache::forget('channels');
 

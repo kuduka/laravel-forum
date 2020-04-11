@@ -9,7 +9,7 @@ trait RecordsActivity
         if (auth()->guest()) {
             return;
         }
-        
+
         foreach (static::getActivitiesToRecord() as $event) {
             static::$event(function ($model) use ($event) {
                 $model->recordActivity($event);
@@ -42,7 +42,7 @@ trait RecordsActivity
     protected function getActivityType($event)
     {
         $type = strtolower((new \ReflectionClass($this))->getShortName());
-        
+
         return "{$event}_{$type}";
     }
 }

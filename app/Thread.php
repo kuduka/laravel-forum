@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Filters\ThreadFilters;
 use App\Events\ThreadReceivedNewReply;
+use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
@@ -37,7 +37,6 @@ class Thread extends Model
 
             Reputation::award($thread->creator, Reputation::THREAD_WAS_PUBLISHED);
         });
-        
     }
 
     public function path()
@@ -104,6 +103,7 @@ class Thread extends Model
     public function hasUpdatesFor($user)
     {
         $key = $user->visitedThreadCacheKey($this);
+
         return $this->updated_at > cache($key);
     }
 
@@ -132,5 +132,4 @@ class Thread extends Model
 
         Reputation::award($reply->owner, Reputation::BEST_REPLY_AWARDED);
     }
-
 }
