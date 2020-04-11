@@ -21,9 +21,3 @@ $factory->state(App\User::class, 'unconfirmed', function () {
 		'confirmed' => false
 	];
 });
-
-$factory->state(App\User::class, 'administrator', function () {
-    return [
-        'name' => 'kuduka'
-    ];
-});
