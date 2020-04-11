@@ -8,6 +8,7 @@ before_script:
   - mkdir -p storage/purify
   - composer self-update
   - composer install --no-interaction
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
   - php artisan key:generate
