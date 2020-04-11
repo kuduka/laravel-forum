@@ -1,5 +1,5 @@
 <?php
-    
+
 namespace App\Providers;
 
 use App\Channel;
@@ -29,13 +29,13 @@ class AppServiceProvider extends ServiceProvider
             $channels = \Cache::rememberForever('channels', function () {
                 return Channel::all();
             });
-            
+
             $view->with('channels', $channels);
         });
 
         if ($this->app->isLocal()) {
             $this->app->register(TelescopeServiceProvider::class);
-    	}
+        }
 
         \Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }

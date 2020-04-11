@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Reply;
-use Illuminate\Http\Request;
 
 class BestRepliesController extends Controller
 {
@@ -11,6 +10,6 @@ class BestRepliesController extends Controller
     {
         $this->authorize('update', $reply->thread);
 
-        $reply->thread->markBestReply($reply);  	
+        $reply->thread->markBestReply($reply);
     }
 }

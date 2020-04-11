@@ -3,7 +3,6 @@
 namespace App;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -29,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
-      'isAdmin'
+        'isAdmin'
     ];
 
     /**
@@ -147,8 +146,11 @@ class User extends Authenticatable
     {
         //TODO: FIX - if storage is not appended it doesn't work
         // return asset($avatar ?: 'images/avatars/default.png');
-        if (is_null($avatar)) return asset('storage/avatars/default.png');
-        return asset('storage/' . $avatar);
+        if (is_null($avatar)) {
+            return asset('storage/avatars/default.png');
+        }
+
+        return asset('storage/'.$avatar);
     }
 
     /**
@@ -159,6 +161,6 @@ class User extends Authenticatable
      */
     public function visitedThreadCacheKey($thread)
     {
-        return sprintf("users.%s.visits.%s", $this->id, $thread->id);
+        return sprintf('users.%s.visits.%s', $this->id, $thread->id);
     }
 }

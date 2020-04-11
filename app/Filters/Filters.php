@@ -24,6 +24,7 @@ abstract class Filters
                 $this->$filter($value);
             }
         }
+
         return $this->builder;
     }
 

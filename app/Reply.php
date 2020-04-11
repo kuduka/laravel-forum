@@ -20,10 +20,10 @@ class Reply extends Model
         parent::boot();
         static::created(function ($reply) {
             $reply->thread->increment('replies_count');
-            
+
             Reputation::award($reply->owner, Reputation::REPLY_POSTED);
         });
-        
+
         static::deleted(function ($reply) {
             $reply->thread->decrement('replies_count');
 
@@ -43,7 +43,7 @@ class Reply extends Model
 
     public function path()
     {
-        return $this->thread->path() . "#reply-{$this->id}";
+        return $this->thread->path()."#reply-{$this->id}";
     }
 
     public function wasJustPublished()
@@ -54,6 +54,7 @@ class Reply extends Model
     public function mentionedUsers()
     {
         preg_match_all('/@([\w\-]+)/', $this->body, $matches);
+
         return $matches[1];
     }
 
@@ -80,5 +81,4 @@ class Reply extends Model
     {
         return \Purify::clean($body);
     }
-
 }

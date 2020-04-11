@@ -7,17 +7,16 @@ use Illuminate\Http\Request;
 
 class UserAvatarController extends Controller
 {
-
     public function store()
     {
-    	request()->validate([
-    		'avatar'  => ['required', 'image']
-    	]);
+        request()->validate([
+            'avatar'  => ['required', 'image']
+        ]);
 
-    	auth()->user()->update([
-    		'avatar_path' => request()->file('avatar')->store('avatars', 'public')
-    	]);
+        auth()->user()->update([
+            'avatar_path' => request()->file('avatar')->store('avatars', 'public')
+        ]);
 
-    	return response([], 204);
+        return response([], 204);
     }
 }

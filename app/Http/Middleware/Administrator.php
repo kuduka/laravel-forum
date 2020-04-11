@@ -6,7 +6,6 @@ use Closure;
 
 class Administrator
 {
-
     public function handle($request, Closure $next)
     {
         if (auth()->check() && auth()->user()->isAdmin()) {

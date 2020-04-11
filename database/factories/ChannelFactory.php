@@ -5,10 +5,11 @@ use App\Channel;
 use Faker\Generator as Faker;
 
 $factory->define(Channel::class, function (Faker $faker) {
-   	$name = $faker->word;
+    $name = $faker->word;
+
     return [
-    	'name' => $name,
-    	'slug' => $name,
+        'name' => $name,
+        'slug' => $name,
         'description' => $faker->sentence
     ];
 });

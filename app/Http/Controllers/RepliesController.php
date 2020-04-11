@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Reply;
 use App\Thread;
-use App\Http\Requests\CreatePostRequest;
 use Illuminate\Http\Request;
 
 class RepliesController extends Controller
@@ -21,11 +21,10 @@ class RepliesController extends Controller
 
     public function store($channelId, Thread $thread, Request $request, CreatePostRequest $form)
     {
-
         if ($thread->locked) {
             return response('Thread is locked', 422);
         }
-        
+
         return $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
@@ -37,7 +36,7 @@ class RepliesController extends Controller
         $this->authorize('update', $reply);
 
         $reply->delete();
- 
+
         if (request()->expectsJson()) {
             return response(['status' => 'Reply deleted']);
         }

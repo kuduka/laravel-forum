@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
-use App\Thread;
-use App\Trending;
 use App\Filters\ThreadFilters;
 use App\Rules\Recaptcha;
-use Illuminate\Support\Str;
+use App\Thread;
+use App\Trending;
 
 class ThreadsController extends Controller
 {
@@ -40,7 +39,6 @@ class ThreadsController extends Controller
 
         return $threads->paginate(25);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -140,13 +138,13 @@ class ThreadsController extends Controller
     public function destroy($channel, Thread $thread)
     {
         $this->authorize('update', $thread);
-        
+
         $thread->delete();
 
         if (request()->wantsJson()) {
             return response([], 204);
         }
-        
+
         return redirect('/threads');
     }
 }

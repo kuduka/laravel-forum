@@ -3,7 +3,7 @@
 return [
 
     'administrators' => [
-    	'marc@fite.cat'
+        'marc@fite.cat'
     ]
 
 ];
