@@ -70759,12 +70759,10 @@ var user = window.App.user;
 module.exports = {
   owns: function owns(model) {
     var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user_id';
-    res = model[prop] === user.id;
-    console.log(model[prop], user.id);
-    return res;
+    return model[prop] === user.id;
   },
   isAdmin: function isAdmin() {
-    return ['kuduka'].includes(user.name);
+    return user.isAdmin;
   }
 };
 

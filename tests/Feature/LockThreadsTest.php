@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Storage; 
 use Tests\TestCase;
 
-class LockThreadTest extends TestCase
+class LockThreadsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function non_administrators_may_not_lock_threads()
+    /** @test */
+    function non_administrators_may_not_lock_threads()
     {
+        $this->withExceptionHandling();
 
         $this->signIn();
 
@@ -25,12 +24,13 @@ class LockThreadTest extends TestCase
     }
 
     /** @test */
-    public function administrators_can_lock_threads()
+    function administrators_can_lock_threads()
     {
-        $this->signIn(factory('App\User')->states('administrator')->create());
+        $user = factory('App\User')->create();
+        config(['council.administrators' => [ $user->email ]]);
+        $this->signIn($user);
 
         $thread = create('App\Thread', ['user_id' => auth()->id()]);
-
 
         $this->post(route('locked-threads.store', $thread));
 
@@ -38,9 +38,11 @@ class LockThreadTest extends TestCase
     }
 
     /** @test */
-    public function administrators_can_unlock_threads()
+    function administrators_can_unlock_threads()
     {
-        $this->signIn(factory('App\User')->states('administrator')->create());
+        $user = factory('App\User')->create();
+        config(['council.administrators' => [ $user->email ]]);
+        $this->signIn($user);
 
         $thread = create('App\Thread', ['user_id' => auth()->id(), 'locked' => true]);
 
@@ -49,15 +51,12 @@ class LockThreadTest extends TestCase
         $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
 
-
     /** @test */
     public function once_locked_a_thread_may_not_receive_new_replies()
     {
-    	$this->signIn();
+        $this->signIn();
 
         $thread = create('App\Thread', ['locked' => true]);
-
-        $thread->lock();
 
         $this->post($thread->path() . '/replies', [
             'body' => 'Foobar',

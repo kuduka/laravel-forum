@@ -2,12 +2,10 @@ let user = window.App.user;
 
 module.exports = {
     owns (model, prop = 'user_id') {
-    	res = model[prop] === user.id;
-    	console.log(model[prop], user.id)
-        return res;
+        return model[prop] === user.id;
     },
 
     isAdmin () {
-        return ['kuduka', ].includes(user.name);
-    },
+        return user.isAdmin;
+    }
 };
