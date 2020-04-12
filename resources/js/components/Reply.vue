@@ -23,12 +23,16 @@
                         <button class="btn btn-xs btn-link" @click="editing = false" type="button">Cancel</button>
                     </form>
                 </div>
-                <div v-else v-html="body"> </div>
+    	        <div ref="body" v-else>
+                    <highlight :content="body"></highlight>
+                </div>
             </div>
             <div class="card-footer level" v-if="authorize('owns', reply) || authorize('owns', reply.thread)">
+                <div v-if="authorize('owns', reply)">
                     <button class="btn btn-primary btn-sm mr-1" @click="editing = true" v-if="! editing">Edit</button>
                     <button class="btn btn-danger btn-sm mr-1" @click="destroy">Delete</button>
-                    <button class="btn btn-primary btn-sm ml-a" @click="markBestReply" v-if="authorize('owns', reply.thread)">Best Reply?</button>
+                </div>
+                <button class="btn btn-primary btn-sm ml-a" @click="markBestReply" v-if="authorize('owns', reply.thread)">Best Reply?</button>
             </div>
         </div>
     </div>
@@ -36,10 +40,11 @@
 
 <script>
     import Favorite from './Favorite.vue';
+    import Highlight from './Highlight.vue';
     import moment from 'moment';
     export default {
         props: ['reply'],
-        components: { Favorite },
+        components: { Favorite, Highlight },
         data() {
             return {
                 editing: false,

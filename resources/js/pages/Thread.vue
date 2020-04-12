@@ -2,10 +2,11 @@
 
 	import Replies from '../components/Replies.vue';
 	import SubscribeButton from '../components/SubscribeButton.vue';
+    import Highlight from '../components/Highlight.vue';
 
 	export default {
 		props: ['thread'],
-		components: { Replies, SubscribeButton},
+		components: { Replies, SubscribeButton, Highlight},
 
 		data() {
 			return {
@@ -17,10 +18,9 @@
                 editing: false
 			};
 		},
-        created () {
+                created () {
             this.resetForm();
         },
-
 		methods: {
 			toggleLock() {
                 
