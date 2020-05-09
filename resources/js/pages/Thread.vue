@@ -55,7 +55,7 @@
             classes(target) {
                 return [
                     'btn',
-                    target ? 'btn-primary' : 'btn-default'
+                    target ? 'btn-danger' : 'btn-primary'
                 ];
             }
 		},
