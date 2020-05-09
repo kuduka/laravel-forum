@@ -34,6 +34,7 @@ class CreateThreadsTable extends Migration
                 ->unsigned()
                 ->nullable();
             $table->boolean('locked')->default(false);
+            $table->boolean('pinned')->default(false);
             $table->timestamps();
             $table->foreign('best_reply_id')
                 ->references('id')
