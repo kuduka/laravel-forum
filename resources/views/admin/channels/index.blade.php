@@ -2,7 +2,7 @@
 
 @section('administration-content')
 
-        <p><a class="btn btn btn-primary" href="{{ route('admin.channels.create') }}">New Channel <span class="glyphicon glyphicon-plus"></span></a></p>
+        <p><a class="btn btn btn-primary" href="{{ route('admin.channels.create') }}">New Channel <span class="fas fa-plus"></span></a></p>
     
         <table class="table">
             <thead>
