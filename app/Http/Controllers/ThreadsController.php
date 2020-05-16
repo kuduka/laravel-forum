@@ -7,6 +7,8 @@ use App\Filters\ThreadFilters;
 use App\Rules\Recaptcha;
 use App\Thread;
 use App\Trending;
+use Illuminate\Validation\Rule;
+
 
 class ThreadsController extends Controller
 {
@@ -65,7 +67,12 @@ class ThreadsController extends Controller
         request()->validate([
             'title' => 'required|spamfree',
             'body' => 'required|spamfree',
-            'channel_id' => 'required|exists:channels,id',
+            'channel_id' => [
+                'required',
+                Rule::exists('channels', 'id')->where(function ($query) {
+                    $query->where('archived', false);
+                })
+            ],
             'g-recaptcha-response' => ['required', $recaptcha],
         ]);
 
