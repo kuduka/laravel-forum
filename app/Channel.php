@@ -12,7 +12,6 @@ class Channel extends Model
         'archived' => 'boolean',
     ];
 
-
     protected static function boot()
     {
         parent::boot();
@@ -22,6 +21,7 @@ class Channel extends Model
                 ->orderBy('name', 'asc');
         });
     }
+
     /**
      * Get the route key name for Laravel.
      *
