@@ -50,7 +50,7 @@ class ThreadsController extends Controller
     public function create()
     {
         return view('threads.create', [
-            'channels' => Channel::where('archived', false)->orderBy('name', 'asc')->get()
+            'channels' => Channel::all()
         ]);
     }
 
