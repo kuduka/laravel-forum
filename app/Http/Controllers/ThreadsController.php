@@ -9,7 +9,6 @@ use App\Thread;
 use App\Trending;
 use Illuminate\Validation\Rule;
 
-
 class ThreadsController extends Controller
 {
     public function __construct()
