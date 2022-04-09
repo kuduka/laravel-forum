@@ -28,7 +28,7 @@
         "at.js": "^1.5.4",
         "highlight.js": "^10.4.1",
         "jquery.caret": "^0.3.1",
-        "moment": "^2.24.0",
+        "moment": "^2.29.2",
         "trix": "^1.2.3",
         "vue-instantsearch": "^2.7.0"
     }
